@@ -37,6 +37,10 @@ The project uses the following technologies:
 
 ---
 
-- Please try to move state to child components as much as possible and avoid global state.
-- The Context API is currently used for state management.
-- Always create pull request for main branch
+This project is configured to use Jotai, Zustand, and the Context API for state management. You can find the relevant files under the following locations:
+
+- `src/store/auth.tsx` (Context API)
+- `src/store/authAtom.ts` (Jotai)
+- `src/store/authStore.tsx` (Zustand)
+
+Currently, the login functionality utilizes Zustand. Note that Jotai also provides similar functionality. For an example of using the Context API, you can refer to the authenticated routes example in Tanstack Router."
