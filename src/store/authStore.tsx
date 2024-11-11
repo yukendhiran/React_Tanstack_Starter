@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { sleep } from "../lib/utils";
+import { sleep } from "@/lib/utils";
 
 // Define the Zustand store
 interface AuthStore {
