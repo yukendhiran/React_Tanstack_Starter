@@ -2,10 +2,26 @@ import {
   Outlet,
   createFileRoute,
   redirect,
-  Link,
+  useRouter,
 } from "@tanstack/react-router";
 
-import { getAuthState } from "@/store/authStore";
+import { AppSidebar } from "@/components/Authenticated/AppSidebar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { getAuthState } from "@/store/auth/authStore";
+
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: ({ location }) => {
     if (!getAuthState()) {
@@ -20,44 +36,48 @@ export const Route = createFileRoute("/_authenticated")({
   component: Home,
 });
 
-function NavigationMenu() {
-  const links = [
-    ["/", "Home"],
-    ["/about", "About"],
-    ["/Sample", "Sample"],
-  ] as const;
-
-  return (
-    <div className="w-56 divide-y">
-      {links.map(([to, label]) => (
-        <div key={to}>
-          <Link
-            to={to}
-            preload="intent"
-            className="block px-3 py-2 text-blue-700"
-            activeProps={{ className: "font-bold" }}
-          >
-            {label}
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function Home() {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <header className="flex items-center gap-2 border-b">
-        <h1 className="p-3 text-2xl">Header</h1>
-      </header>
+  const router = useRouter();
+  const pathSegments = router.latestLocation.pathname
+    .split("/")
+    .filter(Boolean);
 
-      <div className="flex flex-1">
-        <NavigationMenu />
-        <main className="flex-1 border-l">
-          <Outlet />
-        </main>
-      </div>
-    </div>
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                {pathSegments.map((segment, index) => {
+                  const href = "/" + pathSegments.slice(0, index + 1).join("/");
+                  const isLast = index === pathSegments.length - 1;
+                  return (
+                    <>
+                      <BreadcrumbItem key={href}>
+                        {isLast ? (
+                          <BreadcrumbPage>
+                            {decodeURIComponent(segment)}
+                          </BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink href={href}>
+                            {decodeURIComponent(segment)}
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                      {!isLast && <BreadcrumbSeparator />}
+                    </>
+                  );
+                })}
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <Outlet />
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

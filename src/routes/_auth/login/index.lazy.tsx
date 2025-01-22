@@ -1,20 +1,20 @@
-import * as React from "react";
+import { LoginForm } from "@/components/Login/LoginForm";
+import { sleep } from "@/lib/utils";
+import { useAuthStore } from "@/store/auth/authStore";
 import {
   createLazyFileRoute,
   useRouter,
   useRouterState,
 } from "@tanstack/react-router";
-import { LoginForm } from "@/components/Login/LoginForm";
+import * as React from "react";
 import { SubmitHandler } from "react-hook-form";
-import { useAuthStore } from "@/store/authStore";
-import { sleep } from "@/lib/utils";
 
 export const Route = createLazyFileRoute("/_auth/login/")({
   component: LoginComponent,
 });
 
 type Inputs = {
-  username: string;
+  email: string;
 };
 
 function LoginComponent() {
@@ -30,7 +30,7 @@ function LoginComponent() {
     console.log("DATA", data);
 
     try {
-      const fieldValue: string = data.username;
+      const fieldValue: string = data.email;
       console.log("fieldValue", fieldValue);
       if (!fieldValue) return;
       const username = fieldValue.toString();
@@ -51,11 +51,9 @@ function LoginComponent() {
   const isLoggingIn = isLoading || isSubmitting;
 
   return (
-    <div>
-      <div className="flex h-full w-full flex-col content-center items-center justify-center">
-        <div className="w-3/4">
-          <LoginForm onFormSubmit={onFormSubmit} isLoggingIn={isLoggingIn} />
-        </div>
+    <div className="flex min-h-svh flex-col  items-center justify-center bg-muted p-6 md:p-10 bg-gray-400">
+      <div className="w-full max-w-sm md:max-w-3xl">
+        <LoginForm onFormSubmit={onFormSubmit} isLoggingIn={isLoggingIn} />
       </div>
     </div>
   );

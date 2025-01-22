@@ -22,6 +22,9 @@ import { Route as AuthenticatedNoLayoutSampleImport } from './routes/_authentica
 // Create Virtual Routes
 
 const AuthenticatedAboutLazyImport = createFileRoute('/_authenticated/about')()
+const AuthenticatedUserIndexLazyImport = createFileRoute(
+  '/_authenticated/user/',
+)()
 const AuthRegisterIndexLazyImport = createFileRoute('/_auth/register/')()
 const AuthLoginIndexLazyImport = createFileRoute('/_auth/login/')()
 
@@ -59,6 +62,15 @@ const AuthenticatedNoLayoutSampleRoute =
     path: '/Sample',
     getParentRoute: () => AuthenticatedNoLayoutRoute,
   } as any)
+
+const AuthenticatedUserIndexLazyRoute = AuthenticatedUserIndexLazyImport.update(
+  {
+    path: '/user/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/_authenticated/user/index.lazy').then((d) => d.Route),
+)
 
 const AuthRegisterIndexLazyRoute = AuthRegisterIndexLazyImport.update({
   path: '/register/',
@@ -134,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterIndexLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_authenticated/user/': {
+      id: '/_authenticated/user/'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof AuthenticatedUserIndexLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
   }
 }
 
@@ -154,11 +173,13 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 interface AuthenticatedRouteChildren {
   AuthenticatedAboutLazyRoute: typeof AuthenticatedAboutLazyRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedUserIndexLazyRoute: typeof AuthenticatedUserIndexLazyRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAboutLazyRoute: AuthenticatedAboutLazyRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedUserIndexLazyRoute: AuthenticatedUserIndexLazyRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -185,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof AuthLoginIndexLazyRoute
   '/register': typeof AuthRegisterIndexLazyRoute
+  '/user': typeof AuthenticatedUserIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -194,6 +216,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof AuthLoginIndexLazyRoute
   '/register': typeof AuthRegisterIndexLazyRoute
+  '/user': typeof AuthenticatedUserIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -206,13 +229,14 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_auth/login/': typeof AuthLoginIndexLazyRoute
   '/_auth/register/': typeof AuthRegisterIndexLazyRoute
+  '/_authenticated/user/': typeof AuthenticatedUserIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/Sample' | '/about' | '/' | '/login' | '/register'
+  fullPaths: '' | '/Sample' | '/about' | '/' | '/login' | '/register' | '/user'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/Sample' | '/about' | '/' | '/login' | '/register'
+  to: '' | '/Sample' | '/about' | '/' | '/login' | '/register' | '/user'
   id:
     | '__root__'
     | '/_auth'
@@ -223,6 +247,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_auth/login/'
     | '/_auth/register/'
+    | '/_authenticated/user/'
   fileRoutesById: FileRoutesById
 }
 
@@ -266,7 +291,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated.tsx",
       "children": [
         "/_authenticated/about",
-        "/_authenticated/"
+        "/_authenticated/",
+        "/_authenticated/user/"
       ]
     },
     "/_authenticatedNoLayout": {
@@ -294,6 +320,10 @@ export const routeTree = rootRoute
     "/_auth/register/": {
       "filePath": "_auth/register/index.lazy.tsx",
       "parent": "/_auth"
+    },
+    "/_authenticated/user/": {
+      "filePath": "_authenticated/user/index.lazy.tsx",
+      "parent": "/_authenticated"
     }
   }
 }

@@ -1,5 +1,5 @@
+import { getAuthState } from "@/store/auth/authStore";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { getAuthState } from "@/store/authStore";
 
 export const Route = createFileRoute("/_authenticatedNoLayout")({
   beforeLoad: ({ location }) => {
