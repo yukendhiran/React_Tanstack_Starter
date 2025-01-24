@@ -1,21 +1,128 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@font-face {
-  font-family: "Poppins";
-  font-weight: 400;
-  src: url("/fonts/poppins/Poppins-Regular.ttf") format("truetype");
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: Poppins, sans-serif;
+
+  --breakpoint-xxs: 375px;
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --text-h1: 16px;
+  --text-h2: 14px;
+  --text-h3: 13px;
+  --text-h4: 12px;
+  --text-box: 10px;
+  --text-regular: 10px;
+  --text-caption: 10px;
+  --text-button: 14px;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: hsl(var(--background));
+  --color-background-a: hsl(var(--background-a));
+  --color-background-b: hsl(var(--background-b));
+  --color-background-c: hsl(var(--background-c));
+
+  --color-foreground: hsla(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-light: hsl(var(--secondary-light));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-text-two: hsl(var(--text-two));
+  --color-text-three: hsla(var(--text-three), 0.3);
+
+  --color-orange: hsl(var(--orange));
+
+  --color-blue: hsl(var(--blue));
+
+  --color-neutral-grey: hsl(var(--neutral-grey));
+
+  --color-container-background: hsl(var(--container-background));
+  --color-container-foreground: hsl(var(--container-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
 }
 
-@font-face {
-  font-family: "Poppins";
-  font-weight: 600;
-  src: url("/fonts/poppins/Poppins-Bold.ttf") format("truetype");
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
-body {
-  font-family: "Poppins", sans-serif;
+@layer utilities {
+  @font-face {
+    font-family: 'Poppins';
+    font-weight: 400;
+    src: url('/fonts/poppins/Poppins-Regular.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'Poppins';
+    font-weight: 600;
+    src: url('/fonts/poppins/Poppins-Bold.ttf') format('truetype');
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
 }
 
 @layer base {
